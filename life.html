@@ -29,9 +29,44 @@
         return group
     }
 
-    yellow = create(2,'yellow')
+    rule = (particles1,particles2,g)=>{
+
+        for (let i = 0; i < particles1.length; i++) {
+            
+        
+            fx =0
+            fy=0
+            for (let j = 0; j < particles2.length; j++) {
+                
+                a = particles1[i]
+                b = particles2[j]
+                dx = a.x- b.x
+                dy = a.y-b.y
+                d = Math.sqrt(dx**2+dy**2)
+                
+                if(d>1 && d<80){
+                    // simplificar F=G* M1*M2/d2
+                    F=g*1/d
+                    fx += F*dx
+                    fy += F*dy
+                }
+
+                a.vx =(a.vx + fx) *0.5
+                a.vy = (a.vy + fy) *0.5
+                a.x += a.vx 
+                a.y += a.vy 
+                if(a.x<=0 || a.x>=500) a.vx *=-1
+                if(a.y<=0 || a.y>=500) a.vy *=-1
+                
+
+              }
+         }
+    }
+
+    yellow = create(10,'yellow')
 
     update =()=>{
+        rule(yellow,yellow,-1)
         m.clearRect(0,0,500,500)
         draw(0,0,'black',500)
      //draw(161, 181, 'red', 5)
